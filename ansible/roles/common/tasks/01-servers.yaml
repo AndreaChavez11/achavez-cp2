@@ -1,0 +1,5 @@
+---
+
+- name: update dnf
+  command: "/usr/bin/dnf update -y"
+  become: yes
