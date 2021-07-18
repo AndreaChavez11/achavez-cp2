@@ -3,6 +3,6 @@
 
 - name: install packages
   dnf:
-    name: "{{ rpms }}"
+    name: chrony
     state: latest
   become: yes
