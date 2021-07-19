@@ -29,6 +29,7 @@ resource "azurerm_public_ip" "publicIpMaster" {
   resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Dynamic"
   sku                 = "Basic"
+  domain_name_label   = "vmmasterunir180"
 
     tags = {
         environment = "CP2"
@@ -67,6 +68,7 @@ resource "azurerm_public_ip" "publicIpWorker1" {
   resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Dynamic"
   sku                 = "Basic"
+  domain_name_label   = "vmworker1unir180"
 
     tags = {
         environment = "CP2"
@@ -104,6 +106,7 @@ resource "azurerm_public_ip" "publicIpWorker2" {
   resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Dynamic"
   sku                 = "Basic"
+  domain_name_label   = "vmworker2unir180"
 
     tags = {
         environment = "CP2"
@@ -141,9 +144,11 @@ resource "azurerm_public_ip" "publicIpNfs" {
   resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Dynamic"
   sku                 = "Basic"
+  domain_name_label   = "vmnfsunir180"
 
     tags = {
         environment = "CP2"
     }
 
 }
+

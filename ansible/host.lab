@@ -3,9 +3,12 @@ ansible_user=adminUsername
 ansible_python_interpreter=/usr/bin/python3
 
 [master]
-20.101.88.236
+vmmasterunir180.westeurope.cloudapp.azure.com
 
 [workers]
-20.101.91.190
-20.101.59.248
+vmworker1unir180.westeurope.cloudapp.azure.com
+vmworker2unir180.westeurope.cloudapp.azure.com
+
+[nfs]
+vmnfsunir180.westeurope.cloudapp.azure.com
 
