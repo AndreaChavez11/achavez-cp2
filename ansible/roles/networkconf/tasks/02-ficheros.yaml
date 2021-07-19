@@ -2,9 +2,13 @@
 
 - name: copiar fichero
   copy:
-    src: install-kubernetes.yaml
+    src: "{{ item }}"
     dest: /tmp/
     owner: adminUsername
     group: adminUsername
     mode: 0755
   become: yes
+  with_items:
+    - "deploy-webbapp.yaml"
+    - "generate-linux-pass-hash.yaml"
+

@@ -1,0 +1,7 @@
+---
+
+- name: traer fichero
+  fetch:
+    src: /etc/sysconfig/network-scripts/ifcfg-eth0
+    dest: /home/anchavez/achavez-cp2/ansible
+  become: yes
