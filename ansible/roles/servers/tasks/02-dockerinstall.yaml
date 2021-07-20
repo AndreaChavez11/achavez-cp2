@@ -42,3 +42,10 @@
     disable_excludes: kubernetes
     state: latest
   become: yes
+
+- name: Enable kubelet
+  systemd:
+    name: kubelet
+    state: started
+    enabled: yes
+  become: yes
