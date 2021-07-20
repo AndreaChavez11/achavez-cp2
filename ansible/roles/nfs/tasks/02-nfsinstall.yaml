@@ -21,3 +21,15 @@
   become: yes
   with_items:
     - "{{ ips_nfs }}"
+
+- name: valida  /etc/export
+  command: cat /etc/fstab
+  become: yes
+
+- name: Releemos el fichero /etc/exports para aplicar la nueva configuración:
+  command:exportfs -r
+  become: yes
+  
+- name: Releemos el fichero /etc/exports para aplicar la nueva configuración:
+  command:exportfs -s
+  become: yes
