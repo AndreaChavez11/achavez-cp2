@@ -25,10 +25,24 @@
   systemd:
     name: firewalld
     state: reloaded
- 
- - name: Actualiza k8s.conf permitir que kubernetes maneje correctamente el tráfico con el cortafuegos
-    shell: |
-     cat <<EOF > /etc/sysctl.d/k8s.conf
-      > net.bridge.bridge-nf-call-ip6tables = 1
-      > net.bridge.bridge-nf-call-iptables = 1
-      > EOF
+
+- name: update settings net.bridge.bridge-nf-call-ip6tables
+  become: yes
+  sysctl:
+    name: net.bridge.bridge-nf-call-ip6tables
+    value: 1
+    sysctl_set: yes
+    state: present
+    reload: yes
+  
+- name: update settings net.bridge.bridge-nf-call-iptables
+  become: yes
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: 1
+    sysctl_set: yes
+    state: present
+    reload: yes
+    
+- name: Run a command using a templated variable (always use quote filter to avoid injection)
+  ansible.builtin.shell: swapoff  -a
