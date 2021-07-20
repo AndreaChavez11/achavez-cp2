@@ -1,3 +1,5 @@
 ---
 
 rpms: ['wget', 'nfs-utils', 'nfs4-acl-tools']
+
+rpms_kube: ['kubelet', 'kubeadm', 'kubectl']
