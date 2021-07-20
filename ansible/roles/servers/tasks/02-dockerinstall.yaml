@@ -1,0 +1,22 @@
+  ---
+  
+  # Docker
+  - name: "docker"
+    version: 20.10
+    refPaths:
+    - path: vendor/k8s.io/system-validators/validators/docker_validator.go
+      match: latestValidatedDockerVersion
+   become: yes
+   
+- name: Install the latest version of Apache
+  dnf:
+    name: docker-ce-20.10.6-3.el8
+    state: latest
+  become: yes
+  
+- name: Enable a timer unit for dnf-automatic
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+  become: yes
