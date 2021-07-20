@@ -3,3 +3,20 @@
 - name: update dnf
   command: "/usr/bin/dnf update -y"
   become: yes
+  
+- name: install packages
+  dnf:
+    name: "{{ rpms }}"
+    state: latest
+  become: yes
+ 
+- name: Set timezone Europa
+  community.general.timezone:
+    name: Europe/Madrid
+    
+- name: deshabilitar selinux
+  replace:
+    path: /etc/selinux/config
+    regexp: 'SELINUX=enforcing'
+    replace: 'SELINUX=disabled'
+    
