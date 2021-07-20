@@ -1,0 +1,23 @@
+---
+
+- name: install packages
+  dnf:
+    name: "{{ rpms }}"
+    state: latest
+  become: yes
+
+- name: enable services
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+    masked: no
+  become: yes
+  with_items:
+    - "{{ services }}"
+
+- name: agrega linea en /etc/export
+  command: echo "{{ item }}" >> /etc/fstab
+  become: yes
+  with_items:
+    - "{{ ips_nfs }}"
