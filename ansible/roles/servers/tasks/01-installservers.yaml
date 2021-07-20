@@ -1,1 +1,34 @@
 ---
+
+- name: enable services
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+    masked: no
+  become: yes
+  with_items:
+    - "{{ services }}"
+    
+- name: Add the br_netfilter module
+  modprobe:
+    name: br_netfilter
+  become: yes
+
+- name: Activar transparent masquerading
+  firewalld:
+    masquerade: yes
+    state: enabled
+    permanent: yes
+
+- name: Reload service firewalld
+  systemd:
+    name: firewalld
+    state: reloaded
+ 
+ - name: Actualiza k8s.conf permitir que kubernetes maneje correctamente el tráfico con el cortafuegos
+    shell: |
+     cat <<EOF > /etc/sysctl.d/k8s.conf
+      > net.bridge.bridge-nf-call-ip6tables = 1
+      > net.bridge.bridge-nf-call-iptables = 1
+      > EOF
