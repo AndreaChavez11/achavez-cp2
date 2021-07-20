@@ -26,10 +26,19 @@
   command: cat /etc/fstab
   become: yes
 
-- name: Releemos el fichero /etc/exports para aplicar la nueva configuración:
-  command:exportfs -r
+- name: Releemos el fichero /etc/exports para aplicar la nueva configuración
+  command: exportfs -r
   become: yes
   
-- name: Releemos el fichero /etc/exports para aplicar la nueva configuración:
-  command:exportfs -s
+- name: Releemos el fichero /etc/exports para aplicar la nueva configuración
+  command: exportfs -s
   become: yes
+  
+- name: permit traffic service
+  firewalld:
+    service: "{{ item }}"
+    permanent: yes
+    state: enabled
+  become: yes
+  with_items:
+    - "{{ firewallservices }}"
