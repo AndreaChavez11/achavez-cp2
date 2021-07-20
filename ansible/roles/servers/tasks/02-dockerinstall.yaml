@@ -34,4 +34,11 @@
       gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
       exclude=kubelet kubeadm kubectl
       EOF
-  become: yes        
+  become: yes  
+  
+- name: install packages kube
+  dnf:
+    name: "{{ rpms_kube }}"
+    disable_excludes: kubernetes
+    state: latest
+  become: yes
