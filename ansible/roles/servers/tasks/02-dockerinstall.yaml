@@ -1,0 +1,51 @@
+  ---
+  
+  # Docker
+  - name: "docker"
+    version: 20.10
+    refPaths:
+    - path: vendor/k8s.io/system-validators/validators/docker_validator.go
+      match: latestValidatedDockerVersion
+   become: yes
+   
+- name: Install the latest version of Apache
+  dnf:
+    name: docker-ce-20.10.6-3.el8
+    state: latest
+  become: yes
+  
+- name: Enable docker
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Execute cat 
+  shell:
+    cmd: |
+      cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+      [kubernetes]
+      name=Kubernetes
+      baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+      enabled=1
+      gpgcheck=1
+      repo_gpgcheck=1
+      gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+      exclude=kubelet kubeadm kubectl
+      EOF
+  become: yes  
+  
+- name: install packages kube
+  dnf:
+    name: "{{ rpms_kube }}"
+    disable_excludes: kubernetes
+    state: latest
+  become: yes
+
+- name: Enable kubelet
+  systemd:
+    name: kubelet
+    state: started
+    enabled: yes
+  become: yes

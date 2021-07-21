@@ -1,0 +1,52 @@
+---
+
+- name: install packages
+  dnf:
+    name: "{{ rpms }}"
+    state: latest
+  become: yes
+
+- name: enable services
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+    masked: no
+  become: yes
+  with_items:
+    - "{{ services }}"
+
+- name: agrega linea en /etc/export
+  command: echo "{{ item }}" >> /etc/fstab
+  become: yes
+  with_items:
+    - "{{ ips_nfs }}"
+
+- name: valida  /etc/export
+  command: cat /etc/fstab
+  become: yes
+
+- name: Releemos el fichero /etc/exports para aplicar la nueva configuración
+  command: exportfs -r
+  become: yes
+  
+- name: Releemos el fichero /etc/exports para aplicar la nueva configuración
+  command: exportfs -s
+  become: yes
+  
+- name: permit traffic service
+  firewalld:
+    service: "{{ item }}"
+    permanent: yes
+    state: enabled
+  become: yes
+  with_items:
+    - "{{ firewallservices }}"
+
+- name: Reload service firewalld
+  systemd:
+    name: firewalld
+    state: reloaded
+    
+- name: Releemos el fichero /etc/exports para aplicar la nueva configuración
+  command: showmount -e 10.0.1.13

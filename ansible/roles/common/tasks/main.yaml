@@ -1,5 +1,4 @@
 ---
 
 - include_tasks: 01-servers.yaml
-- include_tasks: 02-rpms.yaml
-- include_tasks: 03-services.yaml
+- include_tasks: 02-services.yaml

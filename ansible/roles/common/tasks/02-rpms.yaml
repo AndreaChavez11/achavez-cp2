@@ -1,8 +1,0 @@
-  
----
-
-- name: install packages
-  dnf:
-    name: chrony
-    state: latest
-  become: yes

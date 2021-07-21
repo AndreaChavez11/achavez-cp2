@@ -1,0 +1,48 @@
+---
+
+- name: enable services
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+    masked: no
+  become: yes
+  with_items:
+    - "{{ services }}"
+    
+- name: Add the br_netfilter module
+  modprobe:
+    name: br_netfilter
+  become: yes
+
+- name: Activar transparent masquerading
+  firewalld:
+    masquerade: yes
+    state: enabled
+    permanent: yes
+
+- name: Reload service firewalld
+  systemd:
+    name: firewalld
+    state: reloaded
+
+- name: update settings net.bridge.bridge-nf-call-ip6tables
+  become: yes
+  sysctl:
+    name: net.bridge.bridge-nf-call-ip6tables
+    value: 1
+    sysctl_set: yes
+    state: present
+    reload: yes
+  
+- name: update settings net.bridge.bridge-nf-call-iptables
+  become: yes
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: 1
+    sysctl_set: yes
+    state: present
+    reload: yes
+    
+- name: Run a command using a templated variable (always use quote filter to avoid injection)
+  ansible.builtin.shell: swapoff  -a
