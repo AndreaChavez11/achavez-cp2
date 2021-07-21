@@ -16,15 +16,13 @@
   with_items:
     - "{{ services }}"
 
-- name: agrega linea en /etc/export
-  command: echo "{{ item }}" >> /etc/fstab
+- name: Agrega una linea al archivo /etc/exports
+  lineinfile:
+    path: /etc/exports
+    line: "{{ item }}"
   become: yes
   with_items:
     - "{{ ips_nfs }}"
-
-- name: valida  /etc/export
-  command: cat /etc/fstab
-  become: yes
 
 - name: Releemos el fichero /etc/exports para aplicar la nueva configuración
   command: exportfs -r

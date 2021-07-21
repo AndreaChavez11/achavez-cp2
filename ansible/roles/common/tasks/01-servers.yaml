@@ -11,7 +11,7 @@
   become: yes
  
 - name: Set timezone Europa
-  community.general.timezone:
+  timezone:
     name: Europe/Madrid
     
 - name: deshabilitar selinux

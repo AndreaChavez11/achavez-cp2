@@ -7,7 +7,11 @@
     - path: vendor/k8s.io/system-validators/validators/docker_validator.go
       match: latestValidatedDockerVersion
    become: yes
-   
+
+- name: agrega repositorio docker configurado en las variables como docker_repo
+  command: "/usr/bin/dnf config-manager --add-repo={{ docker_repo }}"
+  become: yes
+ 
 - name: Install the latest version of Apache
   dnf:
     name: docker-ce-20.10.6-3.el8

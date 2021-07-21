@@ -2,13 +2,11 @@
 
 - name: enable services
   systemd:
-    name: "{{ item }}"
+    name: firewalld
     state: started
     enabled: yes
     masked: no
   become: yes
-  with_items:
-    - "{{ services }}"
     
 - name: Add the br_netfilter module
   modprobe:
@@ -44,5 +42,16 @@
     state: present
     reload: yes
     
-- name: Run a command using a templated variable (always use quote filter to avoid injection)
-  ansible.builtin.shell: swapoff  -a
+- name: desactivas swap 
+  become: yes 
+  shell: swapoff  -a
+
+- name: Elimina una linea del archivo fstab
+  become: yes
+  lineinfile:
+    path: /etc/fstab
+    regexp: '^%cs-swap' 
+    # Usamos state absent para eliminar la linea
+    state: absent
+    backup: no
+

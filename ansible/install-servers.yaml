@@ -1,0 +1,8 @@
+---
+
+- name: Instalar master y Workers
+  hosts: master, workers
+  become: true 
+  gather_facts: false
+  roles:
+    - servers
