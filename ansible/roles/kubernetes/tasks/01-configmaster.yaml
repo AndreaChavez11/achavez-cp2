@@ -1,12 +1,58 @@
 ---
 
+- name: Configuramos el firewall para acceder a los servicios de kubernetes
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+  become: yes
+  with_items:
+    - 6443/tcp
+    - 2379-2380/tcp
+    - 10250-10252/tcp
+    - 10255/tcp
+
+- name: Reload service firewalld
+  systemd:
+    name: firewalld
+    state: reloaded
+
 - name: Configuramos kudeadm
   ansible.builtin.shell: kubeadm config images pull
   
-- name: Redirect port 443 to 8443 with Rich Rule
+- name: Permitir el acceso de los workers
   firewalld:
-    rich_rule: rule family=ipv4 forward-port port=443 protocol=tcp to-port=8443
+    rich_rule: rule family=ipv4 source address="{{ item }}" accept
+    permanent: yes
+    state: enabled
+  become: yes
+  with_items:
+    - 10.0.1.11/32 
+    - 10.0.1.12/32
+
+- name: Reload service firewalld
+  systemd:
+    name: firewalld
+    state: reloaded
+
+- name: Permitir el acceso de los contenedores
+  firewalld:
+    rich_rule: rule family=ipv4 source address=172.17.0.0/16 accept
     zone: public
     permanent: yes
-    immediate: yes
     state: enabled
+  become: yes
+
+- name: Reload service firewalld
+  systemd:
+    name: firewalld
+    state: reloaded
+
+- name: Configuramos kudeadm
+  command: kubeadm init --pod-network-cidr 10.1.0.0/16
+  become: yes
+  register: kube_adm
+
+- name: debug
+  debug: msg="Salida del comando kubeadm  {{ kube_adm.stdout }}"
+

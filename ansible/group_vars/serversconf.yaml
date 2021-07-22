@@ -1,0 +1,8 @@
+
+---
+
+rpmskube: ['kubelet', 'kubeadm', 'kubectl']
+
+services: ['chronyd', 'firewalld']
+
+

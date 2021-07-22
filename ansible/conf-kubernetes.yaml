@@ -1,0 +1,8 @@
+---
+
+- name: configurar kubernetes master
+  hosts: master
+  become: true 
+  gather_facts: true
+  roles:
+    - kubernetes

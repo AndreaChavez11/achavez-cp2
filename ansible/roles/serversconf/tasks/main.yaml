@@ -1,0 +1,5 @@
+---
+
+#- include_tasks: 01-installservers.yaml
+- include_tasks: 02-dockerinstall.yaml
+

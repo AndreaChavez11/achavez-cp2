@@ -1,21 +1,11 @@
-  ---
-  
-  # Docker
-  - name: "docker"
-    version: 20.10
-    refPaths:
-    - path: vendor/k8s.io/system-validators/validators/docker_validator.go
-      match: latestValidatedDockerVersion
-   become: yes
+---
 
-- name: agrega repositorio docker configurado en las variables como docker_repo
-  command: "/usr/bin/dnf config-manager --add-repo={{ docker_repo }}"
+- name: agrega repositorio docker configurado en las variables
+  command: dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
   become: yes
  
-- name: Install the latest version of Apache
-  dnf:
-    name: docker-ce-20.10.6-3.el8
-    state: latest
+- name: agrega repositorio docker configurado en las variables
+  command: dnf install docker-ce-20.10.6-3.el8 -y
   become: yes
   
 - name: Enable docker
@@ -42,10 +32,14 @@
   
 - name: install packages kube
   dnf:
-    name: "{{ rpms_kube }}"
+    name: "{{ item }}"
     disable_excludes: kubernetes
     state: latest
   become: yes
+  with_items:
+    - kubelet
+    - kubeadm
+    - kubectl
 
 - name: Enable kubelet
   systemd:
