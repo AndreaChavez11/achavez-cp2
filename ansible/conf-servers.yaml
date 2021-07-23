@@ -2,6 +2,8 @@
 
 - name: Instalar master y Workers
   hosts: master, workers
+  vars_files:
+    - "group_vars/serversconf.yaml"
   become: true 
   gather_facts: false
   roles:

@@ -1,7 +1,9 @@
 ---
 
-- name: configurar nfs
+- name: Instalacion y configuracion de nfs
   hosts: nfs
+  vars_files:
+    - "group_vars/nfs.yaml"
   become: true 
   gather_facts: true
   roles:

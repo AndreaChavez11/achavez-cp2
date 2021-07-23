@@ -1,0 +1,16 @@
+---
+
+- name: Configuramos el firewall SDN Azure
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+  become: yes
+  with_items:
+    - 8285/udp
+    - 8472/udp
+
+- name: Reload service firewalld
+  systemd:
+    name: firewalld
+    state: reloaded

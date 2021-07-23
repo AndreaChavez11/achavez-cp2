@@ -1,0 +1,33 @@
+---
+
+
+- name: Configuracion usuario root
+  shell: |
+    export KUBECONFIG=/etc/kubernetes/admin.conf
+  become: yes
+
+- name: autoriza a root para acceder al cluster
+  shell: |
+    mkdir -p /root/.kube
+
+- name: copia archivo
+  shell: |
+    cp /etc/kubernetes/admin.conf /root/.kube/conf
+  become: yes
+  
+#- name: Copia archivo admin.config
+#  copy:
+#    remote_src: yes 
+#    src: /etc/kubernetes/admin.conf
+#    dest: /root/.kube/config
+#  become: yes
+
+- name: Autorización al user root
+  shell: |
+    chown $(id -u):$(id -g) /root/.kube/conf
+  become: yes
+
+- name: Instala calico kubectl
+  command: kubectl apply -f https://docs.projectcalico.org/manifests/canal.yaml
+  become: yes
+
