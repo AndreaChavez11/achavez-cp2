@@ -48,11 +48,25 @@
     name: firewalld
     state: reloaded
 
-- name: Configuramos kudeadm
-  command: kubeadm init --pod-network-cidr 10.1.0.0/16
-  become: yes
-  register: kube_adm
+#- name: Iniciamos kudeadm
+#  command: kubeadm init --pod-network-cidr 10.1.0.0/16 --print-join-command
+#  become: yes
+#  register: kube_adm
 
-- name: debug
-  debug: msg="Salida del comando kubeadm  {{ kube_adm.stdout }}"
+- name: Obtenemos token
+  command: kubeadm token create --print-join-command
+  become: yes
+  register: join_token
+
+- name: Almacenamos la respuesta en un archivo
+  copy:
+    dest: "/tmp/token1"
+    content: |
+      {{ join_token.stdout }}
+
+- name: Specifying a destination path
+  fetch:
+    src: "/tmp/token1"
+    dest: "/tmp/token1"
+    flat: yes
 

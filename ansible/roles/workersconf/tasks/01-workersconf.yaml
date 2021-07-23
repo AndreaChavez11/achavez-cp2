@@ -4,13 +4,29 @@
   firewalld:
     port: "{{ item }}"
     permanent: yes
+    zone: public
     state: enabled
   become: yes
   with_items:
-    - 8285/udp
-    - 8472/udp
+    - 10250/tcp
+    - 30000-32767/tcp
 
 - name: Reload service firewalld
   systemd:
     name: firewalld
     state: reloaded
+
+- name: Copiamos el archivo con el token
+  copy:
+    src: "/tmp/token1"
+    dest: "/tmp/token1"
+
+- name: Obtenemos el token en una variable
+  command: cat /tmp/token1
+  become: yes
+  register: join_kube
+
+- name: Ejecutamos el join del worker al master
+  command: "{{ join_kube.stdout_lines[0] }}"
+  become: yes
+

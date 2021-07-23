@@ -1,0 +1,8 @@
+---
+
+- name: Join Workers
+  hosts: workers
+  become: true 
+  gather_facts: false
+  roles:
+    - workersconf
