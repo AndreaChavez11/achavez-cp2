@@ -1,9 +1,14 @@
 #!/bin/bash
-
-# añadir tantas líneas como sean necesarias para el correcto despligue
-ansible-playbook -i host.lab install-common.yaml
-ansible-playbook -i host.lab -l nfs install-nfs.yaml
-ansible-playbook -i host.lab conf-servers.yaml
-ansible-playbook -i host.lab -l master conf-kubernetes.yaml
-ansible-playbook -i host.lab -l workers conf-workers.yaml
+#
+#
+echo "Inicia instalacion y actualizacion de los nodos. Esto puede tomar varios minutos..."
+ansible-playbook -i hosts install-common.yaml
+echo "Inicia instalacion y configuracion de nfs"
+ansible-playbook -i hosts -l nfs install-nfs.yaml
+echo "Configuracion comun para master y workers"
+ansible-playbook -i hosts conf-servers.yaml
+echo "Configuracion Kubernetes para master"
+ansible-playbook -i hosts -l master conf-kubernetes.yaml
+echo "Configuracion Kubernetes para workers"
+ansible-playbook -i hosts -l workers conf-workers.yaml
 

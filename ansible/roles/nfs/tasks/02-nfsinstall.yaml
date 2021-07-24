@@ -47,4 +47,4 @@
     state: reloaded
     
 - name: Releemos el fichero /etc/exports para aplicar la nueva configuración
-  command: showmount -e 10.0.1.13
+  command: showmount -e "{{ ip_nfs }}"

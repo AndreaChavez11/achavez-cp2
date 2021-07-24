@@ -10,7 +10,7 @@ resource "azurerm_network_interface" "nicMaster" {
     name                           = "ipconfigurationMaster"
     subnet_id                      = azurerm_subnet.mySubnet.id 
     private_ip_address_allocation  = "Static"
-    private_ip_address             = "10.0.1.10"
+    private_ip_address             = var.ip_master
     public_ip_address_id           = azurerm_public_ip.publicIpMaster.id
   }
 
@@ -49,7 +49,7 @@ resource "azurerm_network_interface" "nicWorker1" {
     name                           = "ipconfigurationWorker1"
     subnet_id                      = azurerm_subnet.mySubnet.id 
     private_ip_address_allocation  = "Static"
-    private_ip_address             = "10.0.1.11"
+    private_ip_address             = var.ip_worker1
     public_ip_address_id           = azurerm_public_ip.publicIpWorker1.id
   }
 
@@ -87,7 +87,7 @@ resource "azurerm_network_interface" "nicWorker2" {
     name                           = "ipconfigurationWorker2"
     subnet_id                      = azurerm_subnet.mySubnet.id 
     private_ip_address_allocation  = "Static"
-    private_ip_address             = "10.0.1.12"
+    private_ip_address             = var.ip_worker2
     public_ip_address_id           = azurerm_public_ip.publicIpWorker2.id
   }
 
@@ -125,7 +125,7 @@ resource "azurerm_network_interface" "nicNfs" {
     name                           = "ipconfigurationNfs"
     subnet_id                      = azurerm_subnet.mySubnet.id 
     private_ip_address_allocation  = "Static"
-    private_ip_address             = "10.0.1.13"
+    private_ip_address             = var.ip_nfs
     public_ip_address_id           = azurerm_public_ip.publicIpNfs.id
   }
 

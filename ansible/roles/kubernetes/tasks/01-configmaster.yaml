@@ -7,10 +7,7 @@
     state: enabled
   become: yes
   with_items:
-    - 6443/tcp
-    - 2379-2380/tcp
-    - 10250-10252/tcp
-    - 10255/tcp
+    - "{{ firewall_ports }}"
 
 - name: Reload service firewalld
   systemd:
@@ -27,8 +24,7 @@
     state: enabled
   become: yes
   with_items:
-    - 10.0.1.11/32 
-    - 10.0.1.12/32
+    - "{{ ipworkers }}"
 
 - name: Reload service firewalld
   systemd:
@@ -48,10 +44,9 @@
     name: firewalld
     state: reloaded
 
-#- name: Iniciamos kudeadm
-#  command: kubeadm init --pod-network-cidr 10.1.0.0/16 --print-join-command
-#  become: yes
-#  register: kube_adm
+- name: Iniciamos kudeadm
+  command: kubeadm init --pod-network-cidr 10.1.0.0/16
+  become: yes
 
 - name: Obtenemos token
   command: kubeadm token create --print-join-command

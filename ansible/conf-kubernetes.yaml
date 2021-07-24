@@ -5,6 +5,6 @@
   vars_files:
     - "group_vars/kubernetes.yaml"
   become: true 
-  gather_facts: true
+  gather_facts: false
   roles:
     - kubernetes

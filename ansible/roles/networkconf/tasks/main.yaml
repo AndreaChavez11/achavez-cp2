@@ -1,6 +1,0 @@
----
-
-- include_tasks: 01-network.yaml
-- include_tasks: 02-ficheros.yaml
-- include_tasks: 03-traer.yaml
-
